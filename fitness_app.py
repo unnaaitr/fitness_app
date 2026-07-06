@@ -5,7 +5,13 @@
 # It's the most common formula used to estimate the number of calories burned at rest, based on some variables
 
 
-def variables(): # we define gender, age, weight and height from every user
+# Before anything, we need to know what BMR and TDEE are:
+    # BMR = Basal Metabolic Rate (calories your body burns at complete rest)
+    # TDEE = Total Daily Energy Expenditure (total calories you burn per day including physical activity)
+        # To calculate TDEE, we need to multiply BMR by the activity factor
+
+
+def variables(): # We define gender, age, weight and height from every user
     while True:
         gender = input("Please, enter your gender (male/female): ").strip().lower()
 
@@ -49,7 +55,7 @@ def variables(): # we define gender, age, weight and height from every user
     return(gender, age, weight, height)
 
 
-def bmr(gender, age, weight, height): # basal metabolism
+def bmr(gender, age, weight, height): # Basal Metabolism Rate (different between men and women)
     if gender == "male":
         bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5
 
@@ -62,7 +68,7 @@ def bmr(gender, age, weight, height): # basal metabolism
     return bmr
 
 
-# that's an important thing for having the result of the variables
+# That's an important thing for having the result of the variables
 gender, age, weight, height = variables()
 result = bmr(gender, age, weight, height)
 print(f"Your BMR is {result:.0f} calories")
