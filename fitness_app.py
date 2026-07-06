@@ -20,7 +20,7 @@ def variables(): # We define gender, age, weight and height from every user
             break
 
         else:
-            print("Choose between male or female\n")
+            print("Please, choose between male or female\n")
 
     while True:
         age = int(input("Please, enter your age: "))
@@ -57,18 +57,126 @@ def variables(): # We define gender, age, weight and height from every user
 
 def bmr(gender, age, weight, height): # Basal Metabolism Rate (different between men and women)
     if gender == "male":
-        bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5
+        bmr_calc = (10 * weight) + (6.25 * height) - (5 * age) + 5
 
     elif gender == "female":
-        bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161
+        bmr_calc = (10 * weight) + (6.25 * height) - (5 * age) - 161
 
     else:
-        print("Choose between male or female\n")
+        print("Please, choose between male or female\n")
 
-    return bmr
+    return bmr_calc
+
+
+def tdee(bmr_calc): # Then we have to add the activity factor
+    while True:
+        activity_factor = int(input("Please, select your activity level:\n1 - Sedentary (office job, no exercise)\n2 - Light (1-3 days of exercise per week)\n3 - Moderate (3-5 days of exercise per week)\n4 - Intense (6-7 days of exercise per week)\n5 - Athlete (physical job + daily training)\n\nChoose (1-5): "))
+
+        if activity_factor == 1:
+            print("You're sedentary")
+            tdee_calc = bmr_calc * 1.2
+            break
+
+        elif activity_factor == 2:
+            print("You have a light activity level")
+            tdee_calc = bmr_calc * 1.375
+            break
+
+        elif activity_factor == 3:
+            print("You have a moderate activity level")
+            tdee_calc = bmr_calc * 1.55
+            break
+
+        elif activity_factor == 4:
+            print("You have an intense activity level")
+            tdee_calc = bmr_calc * 1.725
+            break
+
+        elif activity_factor == 5:
+            print("You're an athlete")
+            tdee_calc = bmr_calc * 1.9
+            break
+
+        else:
+            print("Please, choose a correct option (1-5)")
+
+    return tdee_calc
+
+
+# We will calculate the BMI (Body Mass Index) and offer the user a recommendation that can be accepted or not, and then it will show what to do if it's not liked
+def bmi(height, weight):
+    print("Now it will be shown a recommendation based on your height and weight")
+
+    bmi_calc = weight / (height / 100) ** 2
+
+    if bmi_calc < 18.5:
+        to_do = "bulk"
+        print("You're underweighted, you should bulk\n")
+
+    elif bmi_calc < 24.9:
+        to_do = "mantain"
+        print("You're okay, you should maintain your bodyweight\n")
+
+    elif bmi_calc < 29.9:
+        to_do = "cut"
+        print("You're overweighted, you should cut\n")
+
+    else:
+        to_do = "cut"
+        print("You're obese, you should cut\n")
+
+
+    # We're now doing if the user wants to do the recommendation or not
+    while True:
+        approval = input("Do you like the recommendation (yes/no): ").strip().lower()
+
+        if approval == "yes":
+            print(f"You have choosen to {to_do}")
+            break
+
+        elif approval == "no":
+            while True:       
+                new_choose = input("What do you want to do (bulk, mantain, cut) weight? ")
+
+                if new_choose == "bulk":
+                    to_do = new_choose
+                    print(f"You have choosen to {new_choose}")
+                    break
+
+                elif new_choose == "mantain":
+                    to_do = new_choose
+                    print(f"You have choosen to {new_choose}")
+                    break
+
+                elif new_choose == "cut":
+                    to_do = new_choose
+                    print(f"You have choosen to {new_choose}")
+                    break
+        
+                else:
+                    print("Please, choose a correct option")
+
+        else:
+            print("Please, choose a correct option")
+
+    return bmi_calc, to_do
+
+
+def macros(tdee_calc, weight, to_do): # This function will calculate calories, protein, fat and carbs for every user
+    pass
+
+
+
 
 
 # That's an important thing for having the result of the variables
 gender, age, weight, height = variables()
-result = bmr(gender, age, weight, height)
-print(f"Your BMR is {result:.0f} calories")
+bmr_calc = bmr(gender, age, weight, height)
+tdee_calc = tdee(bmr_calc)
+bmi_calc, to_do = bmi(height, weight)
+
+
+# Then we print the calorie results for the user
+print(f"Your BMR is {bmr_calc:.0f} calories")
+print(f"Your TDEE is {tdee_calc:.0f} calories")
+print(f"Your BMI is {bmi_calc:.1f}")
